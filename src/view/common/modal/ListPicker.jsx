@@ -60,22 +60,23 @@ const ListPicker = ({
       <BottomModal visible={visible} onClose={() => setVisible(false)}>
         <View className="pb-24">
           {items.map((item, index) => (
-            <View
-              key={`${index}`}
-              className={`h-14 w-full items-center justify-center ${
-                items?.length - 1 !== index && 'border-b border-neutral-200'
-              }`}>
-              <TouchableOpacity
-                className={`h-full w-full items-center flex-row justify-between px-5`}
-                onPress={() => onItemPress(item)}>
-                <Text
-                  style={{fontFamily: FontTypes.secondary}}
-                  className="text-base text-black">
-                  {item?.label}
-                </Text>
-                <RadioButton checked={value?.name === item?.name} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={() => onItemPress(item)}>
+              <View
+                key={`${index}`}
+                className={`h-14 w-full items-center justify-center ${
+                  items?.length - 1 !== index && 'border-b border-neutral-200'
+                }`}>
+                <View
+                  className={`h-full w-full items-center flex-row justify-between px-5`}>
+                  <Text
+                    style={{fontFamily: FontTypes.secondary}}
+                    className="text-base text-black">
+                    {item?.label}
+                  </Text>
+                  <RadioButton checked={value?.name === item?.name} />
+                </View>
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
       </BottomModal>

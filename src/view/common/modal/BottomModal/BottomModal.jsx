@@ -57,15 +57,7 @@ const BottomModal = ({visible, children, onClose, title, onButtonPress}) => {
         <Animated.View
           style={{transform: [{translateY: transRef}]}}
           className="w-full absolute bottom-0 z-[999] overflow-hidden pt-6">
-          <View
-            style={{
-              width: screen_width / 4,
-              height: screen_width / 4,
-              transform: [{scaleX: 7}],
-            }}
-            className=" h-[100] rounded-[100px] bg-white  self-center  overflow-hidden ab absolute top-0 -z-10 "
-          />
-          <View className="bg-white">
+          <View className="bg-white pt-4 rounded-xl">
             <BottomModalHeader
               title={title}
               handleClose={onClose}

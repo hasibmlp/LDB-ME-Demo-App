@@ -60,6 +60,7 @@ const LoginScreen = ({}) => {
     }
 
     AsyncStorage.setItem('@userKey', data.Useruniqueid);
+    AsyncStorage.setItem('@user', JSON.stringify(data));
     navigation.navigate('MyDrawer');
     setStatus({message: data.Message, status: data.Status});
   };

@@ -27,7 +27,7 @@ const ModalOverlay = ({visible, handleClose}) => {
       style={[{opacity: opacityRef}]}
       className={` absolute top-0 bottom-0 left-0 right-0 bg-black z-50 `}>
       <TouchableOpacity
-        className="h-full w-full"
+        style={{height: '100%', width: '100%'}}
         onPress={handleClose}
         onPressIn={handleClose}
       />
