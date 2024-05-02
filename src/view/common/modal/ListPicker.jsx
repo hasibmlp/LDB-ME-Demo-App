@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {MapIcon} from 'react-native-heroicons/outline';
 
 import BottomModal from './BottomModal/BottomModal';
 import {FontTypes} from '../../theme/fonts';
@@ -26,8 +25,10 @@ const ListPicker = ({
 
   const onSearchInput = values => {
     setSearchQuery(
-      items.filter(item =>
-        item.labelMiddle.toLowerCase().includes(values.toLowerCase()),
+      items.filter(
+        item =>
+          item.labelMiddle?.toLowerCase()?.includes(values?.toLowerCase()) ??
+          item.label.toLowerCase().includes(values.toLowerCase()),
       ),
     );
   };
@@ -60,7 +61,9 @@ const ListPicker = ({
       <BottomModal visible={visible} onClose={() => setVisible(false)}>
         <View className="pb-24">
           {items.map((item, index) => (
-            <TouchableOpacity onPress={() => onItemPress(item)}>
+            <TouchableOpacity
+              key={index.toString()}
+              onPress={() => onItemPress(item)}>
               <View
                 key={`${index}`}
                 className={`h-14 w-full items-center justify-center ${
@@ -92,9 +95,7 @@ const ListPicker = ({
       <View className="pb-24">
         <View className="bg-white h-12 items-center flex-row border-b border-neutral-200 pr-4">
           <View className="flex-1 flex-row">
-            <View className="p-3">
-              <MapIcon size={24} color="black" />
-            </View>
+            <View className="p-3"></View>
             <TextInput
               className={` flex-1 text-${I18nManager.isRTL ? 'right' : 'left'}`}
               placeholder="Search Country"

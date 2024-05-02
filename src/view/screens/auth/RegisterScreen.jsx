@@ -23,10 +23,10 @@ import ToastMessage from '../../common/notification/ToastMessage';
 import ListPicker from '../../common/modal/ListPicker';
 
 import countryData from '../../config/countriesData.json';
+import {useNavigation} from '@react-navigation/native';
 
 const countries = countryData.map(item => ({
-  label: `${item.code}`,
-  labelMiddle: item.name,
+  label: item.name,
   value: {value: item.code, symbol: item.symbol},
   name: item.code,
 }));
@@ -42,15 +42,36 @@ const registerValidationSchema = Yup.object({
   acceptsTerms: Yup.boolean(),
 });
 
+const specialityData = [
+  {
+    label: 'Doctor',
+    labelMiddle: 'Doctor',
+    value: 'Doctor',
+    name: 'Doctor',
+  },
+  {
+    label: 'Engineer',
+    labelMiddle: 'Engineer',
+    value: 'Engineer',
+    name: 'Engineer',
+  },
+];
+
 const RegisterScreen = ({handleRegister}) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({});
 
-  const [isCountryModalVisible, setCountryModalVisible] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState();
+  const navigation = useNavigation();
 
-  const onCountryChange = () => {
-    setSelectedCountry(countries[0]);
+  const [isCountryModalVisible, setCountryModalVisible] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+
+  const [isSpecialiyModalVisible, setSpecialiyModalVisible] = useState(false);
+  const [selectedSpecialiy, setSelectedSpecialiy] = useState(null);
+
+  const onCountryChange = item => {
+    setSelectedCountry(item);
+    setCountryModalVisible(false);
   };
 
   const onRegister = async values => {
@@ -72,13 +93,18 @@ const RegisterScreen = ({handleRegister}) => {
     if (!response.ok) {
       setStatus({
         message: 'Some thing went wrong, Please try again',
-        status: 'error',
+        status: false,
       });
     }
 
     const data = await response.json();
 
-    // AsyncStorage.setItem('userKey', '');
+    console.log(JSON.stringify(data, null, 2));
+
+    if (data?.Useruniqueid === '0' || data?.Useruniqueid === null) {
+      setStatus({message: data.Message, status: false});
+      return;
+    }
 
     console.log('resutl ', JSON.stringify(data, null, 2));
     setStatus({message: data.Message, status: data.Status});
@@ -97,16 +123,17 @@ const RegisterScreen = ({handleRegister}) => {
           keyboardShouldPersistTaps="handled"
           className="w-full h-full"
           showsVerticalScrollIndicator={false}>
-          <View className="flex-1 w-full px-10 pt-20 pb-40">
+          <View className="flex-1 w-full px-6 pt-10 pb-40">
             <Formik
               initialValues={{
                 fullName: '',
                 email: '',
                 password: '',
-                speciality: 'doctor',
-                phone: '97150892823',
-                instagram: 'ins?sfs',
-                tiktok: 'tike?dlsf',
+                speciality: selectedSpecialiy?.value ?? '',
+                country: selectedCountry?.value ?? '',
+                phone: '',
+                instagram: '',
+                tiktok: '',
                 acceptsTerms: false,
               }}
               validationSchema={registerValidationSchema}
@@ -143,7 +170,7 @@ const RegisterScreen = ({handleRegister}) => {
                       error={errors.email}
                       touched={touched.email}
                       keyboardType="email-address"
-                      label="email"
+                      label="Email"
                       captionText="Enter a valid email*"
                     />
 
@@ -154,14 +181,15 @@ const RegisterScreen = ({handleRegister}) => {
                       isSecureTextEntry={true}
                       error={errors.password}
                       touched={touched.password}
-                      label="password"
+                      label="Password"
                       captionText="Enter a password*"
                     />
 
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => setSpecialiyModalVisible(true)}>
                       <View className="flex-row items-center justify-between py-2 mt-4">
                         <Text className="text-base text-black">
-                          Select Speciality*
+                          {selectedSpecialiy?.label || 'Select Speciality*'}
                         </Text>
                         <ChevronUpDownIcon size={24} color="black" />
                       </View>
@@ -175,7 +203,7 @@ const RegisterScreen = ({handleRegister}) => {
                             Select Speciality*
                           </Text>
                           <Text className="text-base text-black">
-                            United Arab Emirates
+                            {selectedCountry?.label ?? 'Select'}
                           </Text>
                         </View>
                         <ChevronDownIcon
@@ -185,6 +213,17 @@ const RegisterScreen = ({handleRegister}) => {
                         />
                       </View>
                     </TouchableOpacity>
+
+                    <MyTextInput
+                      handleChange={handleChange('phone')}
+                      handleBlur={handleBlur('phone')}
+                      value={values.phone}
+                      isSecureTextEntry={false}
+                      error={errors.phone}
+                      touched={touched.phone}
+                      label="Mobile Number"
+                      captionText="Enter Mobile Number*"
+                    />
 
                     <MyTextInput
                       handleChange={handleChange('instagram')}
@@ -248,6 +287,17 @@ const RegisterScreen = ({handleRegister}) => {
           presentation="fullView"
         />
       )}
+
+      <ListPicker
+        items={specialityData}
+        visible={isSpecialiyModalVisible}
+        setVisible={setSpecialiyModalVisible}
+        onItemPress={value => {
+          setSelectedSpecialiy(value);
+          setSpecialiyModalVisible(false);
+        }}
+        value={selectedSpecialiy}
+      />
     </>
   );
 };

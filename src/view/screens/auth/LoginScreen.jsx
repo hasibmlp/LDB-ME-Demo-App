@@ -32,6 +32,7 @@ const LoginScreen = ({}) => {
   const navigation = useNavigation();
 
   const onLogin = async values => {
+    console.log(values);
     setLoading(true);
     const response = await fetch(
       'https://ldb-me.ve-live.com/api/AdminApiProvider/UserLogin',
@@ -40,7 +41,7 @@ const LoginScreen = ({}) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email: 'user@gmail.com', password: '123456'}),
+        body: JSON.stringify(values),
       },
     );
 
@@ -55,8 +56,17 @@ const LoginScreen = ({}) => {
 
     const data = await response.json();
 
-    if (!data.Useruniqueid) {
-      setStatus({message: data.Message, status: data.Status});
+    console.log(JSON.stringify(data, null, 2));
+
+    if (
+      !data.Useruniqueid ||
+      data.Useruniqueid === '0' ||
+      data.Useruniqueid === '' ||
+      data.Useruniqueid === null ||
+      data.Status === false
+    ) {
+      setStatus({message: data.Message, status: false});
+      return;
     }
 
     AsyncStorage.setItem('@userKey', data.Useruniqueid);
@@ -64,7 +74,6 @@ const LoginScreen = ({}) => {
     navigation.navigate('MyDrawer');
     setStatus({message: data.Message, status: data.Status});
   };
-
   return (
     <>
       <ToastMessage status={status} />

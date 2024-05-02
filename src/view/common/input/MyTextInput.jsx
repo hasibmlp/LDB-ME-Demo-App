@@ -25,8 +25,8 @@ const MyTextInput = ({
   const [isHidePassword, setHidePassword] = useState(isSecureTextEntry);
 
   const transformY = useSharedValue(10);
-  const height = useSharedValue(55);
-  const errorHeight = useSharedValue(55);
+  const height = useSharedValue(50);
+  const errorHeight = useSharedValue(50);
 
   const animatedStyle = useAnimatedStyle(() => ({
     top: withTiming(transformY.value),
