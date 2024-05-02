@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import BootSplash from 'react-native-bootsplash';
 
 import HomeScreen from '../screens/HomeScreen';
 import MyDrawer from './Drawer';
@@ -11,8 +12,22 @@ import {Colors} from '../theme/colors';
 const Stack = createStackNavigator();
 
 const AppNavigation = () => {
+  //   React.useEffect(() => {
+  //     const init = async () => {
+  //       // …do multiple sync or async tasks
+  //     };
+
+  //     init().finally(async () => {
+  //       await BootSplash.hide({fade: true});
+  //       console.log('BootSplash has been hidden successfully');
+  //     });
+  //   }, []);
+
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      onReady={() => {
+        BootSplash.hide();
+      }}>
       <Stack.Navigator>
         <Stack.Screen
           name="LoginScreen"

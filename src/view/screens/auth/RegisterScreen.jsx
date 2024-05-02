@@ -15,17 +15,15 @@ import MyTextInput from '../../common/input/MyTextInput';
 import Button from '../../common/button/Button';
 import {Colors} from '../../theme/colors';
 
+const registerValidationSchema = Yup.object({
+  firstName: Yup.string().required(),
+  lastName: Yup.string().required(),
+  email: Yup.string().email().required(),
+  password: Yup.string().required(),
+  acceptsMarketing: Yup.boolean(),
+});
+
 const RegisterScreen = ({handleRegister, loading}) => {
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const registerValidationSchema = Yup.object({
-    firstName: Yup.string().required(),
-    lastName: Yup.string().required(),
-    email: Yup.string().email().required(),
-    password: Yup.string().required(),
-    acceptsMarketing: Yup.boolean(),
-  });
-
   return (
     <>
       <KeyboardAvoidingView

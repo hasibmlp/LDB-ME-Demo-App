@@ -8,11 +8,12 @@ import {
 } from 'react-native';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
+import {useNavigation} from '@react-navigation/native';
+
 import {FontTypes} from '../../theme/fonts';
 import MyTextInput from '../../common/input/MyTextInput';
 import Button from '../../common/button/Button';
 import {Colors} from '../../theme/colors';
-import {useNavigation} from '@react-navigation/native';
 
 const loginValidationSchema = Yup.object({
   email: Yup.string()
