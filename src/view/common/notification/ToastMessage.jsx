@@ -10,7 +10,7 @@ import {FontTypes} from '../../theme/fonts';
 const screenWidth = Dimensions.get('window').width;
 
 const ToastMessage = ({status, completed}) => {
-  const sv = useSharedValue(-60);
+  const sv = useSharedValue(-120);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{translateY: sv.value}],
@@ -23,7 +23,7 @@ const ToastMessage = ({status, completed}) => {
       sv.value = withTiming(0, {duration: 400});
       const timeout = setTimeout(
         () => {
-          sv.value = withTiming(-60, {duration: 400});
+          sv.value = withTiming(-120, {duration: 400});
         },
         messageLength > 90 ? 10000 : 6000,
       );
