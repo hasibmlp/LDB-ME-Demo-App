@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
+  Image,
   KeyboardAvoidingView,
   ScrollView,
   Text,
@@ -17,6 +18,7 @@ import MyTextInput from '../../common/input/MyTextInput';
 import Button from '../../common/button/Button';
 import {Colors} from '../../theme/colors';
 import ToastMessage from '../../common/notification/ToastMessage';
+import {Images} from '../../theme/image';
 
 const loginValidationSchema = Yup.object({
   email: Yup.string()
@@ -78,7 +80,7 @@ const LoginScreen = ({}) => {
     <>
       <ToastMessage status={status} />
       <KeyboardAvoidingView
-        className="flex-1 w-full"
+        className="flex-1 w-full bg-white"
         enabled
         behavior="padding"
         keyboardVerticalOffset={50}>
@@ -87,15 +89,14 @@ const LoginScreen = ({}) => {
           className="w-full h-full"
           showsVerticalScrollIndicator={false}>
           <View className="flex-1 w-full px-10 ">
-            <View className="mt-10 mb-20 items-center">
-              <Text
-                style={{fontFamily: FontTypes.primary}}
-                className="text-4xl text-[#000]  mb-1">
-                Hi
-              </Text>
+            <View className="mt-32 mb-20 items-center">
+              <Image
+                className="w-full h-[50] scale-150"
+                source={Images.Logo.LogoTitle}
+              />
               <Text
                 style={{fontFamily: FontTypes.secondary}}
-                className="text-base text-[#000]  ">
+                className="text-lg text-[#000] uppercase mt-5">
                 Hello
               </Text>
             </View>

@@ -15,6 +15,7 @@ import BrandInnovations from '../assets/images/images.png';
 import Social from '../assets/images/social.png';
 
 import LogoBanner from '../assets/images/logo/faduimage.jpeg';
+import LogoTitle from '../assets/images/logo/splash.png';
 
 const TitleImage = {
   Agenda,
@@ -36,6 +37,7 @@ const TitleImage = {
 
 const Logo = {
   LogoBanner,
+  LogoTitle,
 };
 
 export const Images = {

@@ -32,7 +32,7 @@ const AppNavigation = () => {
             component={LoginScreen}
             options={{
               title: null,
-              headerStyle: {backgroundColor: Colors.backgroud},
+              headerStyle: {backgroundColor: 'white', shadowOpacity: 0},
             }}
           />
           <Stack.Screen
@@ -40,7 +40,7 @@ const AppNavigation = () => {
             component={RegisterScreen}
             options={{
               title: null,
-              headerStyle: {backgroundColor: Colors.backgroud},
+              headerStyle: {backgroundColor: 'white'},
             }}
           />
         </>

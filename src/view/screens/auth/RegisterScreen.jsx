@@ -115,7 +115,7 @@ const RegisterScreen = ({handleRegister}) => {
       <ToastMessage status={status} />
 
       <KeyboardAvoidingView
-        className="flex-1"
+        className="flex-1 bg-white"
         enabled
         behavior="padding"
         keyboardVerticalOffset={50}>
