@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import MyTextInput from '../../common/input/MyTextInput';
 import {Colors} from '../../theme/colors';
@@ -53,6 +54,7 @@ const RegisterScreen = ({handleRegister}) => {
   };
 
   const onRegister = async values => {
+    console.log('hello whlfd sfhalsfnl lsdhfd');
     setLoading(true);
     const response = await fetch(
       'https://ldb-me.ve-live.com/api/AdminApiProvider/RegisterUser',
@@ -76,6 +78,9 @@ const RegisterScreen = ({handleRegister}) => {
 
     const data = await response.json();
 
+    // AsyncStorage.setItem('userKey', '');
+
+    console.log('resutl ', JSON.stringify(data, null, 2));
     setStatus({message: data.Message, status: data.Status});
   };
 

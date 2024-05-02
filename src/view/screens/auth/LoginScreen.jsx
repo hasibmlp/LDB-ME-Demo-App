@@ -10,6 +10,7 @@ import {
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {FontTypes} from '../../theme/fonts';
 import MyTextInput from '../../common/input/MyTextInput';
@@ -27,6 +28,8 @@ const loginValidationSchema = Yup.object({
 const LoginScreen = ({}) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({});
+
+  const navigation = useNavigation();
 
   const onLogin = async values => {
     setLoading(true);
@@ -52,10 +55,14 @@ const LoginScreen = ({}) => {
 
     const data = await response.json();
 
+    if (!data.Useruniqueid) {
+      setStatus({message: data.Message, status: data.Status});
+    }
+
+    AsyncStorage.setItem('@userKey', data.Useruniqueid);
+    navigation.navigate('MyDrawer');
     setStatus({message: data.Message, status: data.Status});
   };
-
-  const navigation = useNavigation();
 
   return (
     <>
