@@ -19,6 +19,7 @@ const MyTextInput = ({
   keyboardType = 'default',
   animation = true,
   placeholder,
+  captionText,
 }) => {
   const [isFocused, setFocused] = useState(value?.length > 0 ? true : false);
   const [isHidePassword, setHidePassword] = useState(isSecureTextEntry);
@@ -41,82 +42,12 @@ const MyTextInput = ({
       : withTiming(10, {duration: 0});
 
     height.value = isFocused
-      ? withTiming(55, {duration: 0})
+      ? withTiming(60, {duration: 0})
       : withTiming(50, {duration: 0});
   }, [isFocused, transformY, height]);
 
-  useEffect(() => {
-    height.value =
-      error && touched
-        ? withTiming(75, {duration: 0})
-        : withTiming(55, {duration: 0});
-  }, [error, touched, height]);
-
-  if (animation === false) {
-    return (
-      <Animated.View style={animatedContainerStyle} className={`mb-4`}>
-        <View
-          className={`flex justify-end border-b  ${
-            error && touched ? 'border-red-500' : 'border-neutral-300'
-          } h-14 bg-white`}>
-          <Text
-            style={{fontFamily: FontTypes.secondary}}
-            className={`text-base  absolute top-0 ${
-              error && touched ? 'text-red-600' : 'text-black-600'
-            } w-full text-left`}>
-            {label}
-          </Text>
-
-          {
-            <TextInput
-              style={{fontFamily: FontTypes.secondary}}
-              className=" flex-1 pt-5 text-left "
-              onChangeText={handleChange}
-              onBlur={handleBlur}
-              value={value}
-              secureTextEntry={isHidePassword}
-              keyboardType={keyboardType}
-              placeholder={placeholder}
-              placeholderTextColor={'gray'}
-            />
-          }
-
-          {isSecureTextEntry && (
-            <View className="absolute right-3">
-              {!isHidePassword && (
-                <Button
-                  size="sm"
-                  label="hide"
-                  type="action"
-                  onPress={() => setHidePassword(true)}
-                />
-              )}
-              {isHidePassword && (
-                <Button
-                  size="sm"
-                  label="show"
-                  type="action"
-                  onPress={() => setHidePassword(false)}
-                />
-              )}
-            </View>
-          )}
-        </View>
-        {
-          <View className="absolute bottom-0 -z-10">
-            <Text
-              style={{fontFamily: FontTypes.secondary}}
-              className={` text-xs text-red-600 pt-3 text-left`}>
-              {error}
-            </Text>
-          </View>
-        }
-      </Animated.View>
-    );
-  }
-
   return (
-    <View className={`mb-2 flex justify-center pb-5`}>
+    <View className={`mb-2 flex justify-center`}>
       <Animated.View
         style={animatedContainerStyle}
         className={`flex justify-end border-b  ${
@@ -175,13 +106,14 @@ const MyTextInput = ({
           </View>
         )}
       </Animated.View>
-      {
-        <Text
-          style={{fontFamily: FontTypes.secondary}}
-          className={` absolute -bottom-1 text-xs text-red-600 pt-3 text-left`}>
-          {error && touched && error}
-        </Text>
-      }
+
+      <Text
+        style={{fontFamily: FontTypes.secondary}}
+        className={` text-sm ${
+          error && touched ? 'text-red-500' : 'text-neutral-500'
+        }  pt-1 text-left`}>
+        {captionText}
+      </Text>
     </View>
   );
 };
