@@ -13,16 +13,26 @@ import SocialMediaScreen from '../screens/SocialMediaScreen';
 import SurveyScreen from '../screens/SurveyScreen';
 import CMEScreen from '../screens/CMEScreen';
 
+import BackIconButton from '../common/icons/BackIconButton';
+import {View} from 'react-native';
+import {Bars3Icon} from 'react-native-heroicons/outline';
+import BarsIconButton from '../common/icons/BarsIconButton';
+
 const Drawer = createDrawerNavigator();
 
 const MyDrawer = () => {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      screenOptions={{
+        drawerType: 'front',
+      }}>
       <Drawer.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{
           drawerLabel: 'Home',
+          title: null,
+          headerStyle: {backgroundColor: '#075985'},
         }}
       />
       <Drawer.Screen
@@ -30,13 +40,16 @@ const MyDrawer = () => {
         component={AgendaScreen}
         options={{
           drawerLabel: 'Agenda',
+          title: null,
+          headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
+          headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
         }}
       />
       <Drawer.Screen
         name="SpeakerStack"
         component={SpeakerStack}
         options={{
-          drawerLabel: 'Speakers',
+          headerShown: false,
         }}
       />
       <Drawer.Screen

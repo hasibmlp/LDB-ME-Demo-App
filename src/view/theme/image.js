@@ -14,6 +14,8 @@ import Videos from '../assets/images/videos.png';
 import BrandInnovations from '../assets/images/images.png';
 import Social from '../assets/images/social.png';
 
+import LogoBanner from '../assets/images/logo/faduimage.jpeg';
+
 const TitleImage = {
   Agenda,
   Badge,
@@ -32,6 +34,11 @@ const TitleImage = {
   Social,
 };
 
+const Logo = {
+  LogoBanner,
+};
+
 export const Images = {
   ...TitleImage,
+  Logo,
 };

@@ -4,18 +4,34 @@ import {Images} from '../theme/image';
 import {useNavigation} from '@react-navigation/native';
 
 const data = [
-  {title: 'Agenda', imageUrl: Images.Agenda},
-  {title: 'Speakers', imageUrl: Images.Speakers},
-  {title: 'Badge', imageUrl: Images.Badge},
-  {title: 'Venue', imageUrl: Images.Venue},
-  {title: 'Brand Innovation', imageUrl: Images.BrandInnovations},
-  {title: 'Brand Videos', imageUrl: Images.Videos},
-  {title: 'Ask Questions', imageUrl: Images.Questions},
-  {title: 'Voting', imageUrl: Images.Voting},
-  {title: 'Social Media', imageUrl: Images.Social},
-  {title: 'Survey', imageUrl: Images.Survey},
-  {title: 'CME', imageUrl: Images.CME},
-  {title: 'More', imageUrl: Images.More},
+  {title: 'Agenda', imageUrl: Images.Agenda, navigate: 'AgendaScreen'},
+  {title: 'Speakers', imageUrl: Images.Speakers, navigate: 'SpeakerStack'},
+  {title: 'Badge', imageUrl: Images.Badge, navigate: 'BadgeScreen'},
+  {title: 'Venue', imageUrl: Images.Venue, navigate: 'VenueScreen'},
+  {
+    title: 'Brand Innovation',
+    imageUrl: Images.BrandInnovations,
+    navigate: 'BrandInnovationScreen',
+  },
+  {
+    title: 'Brand Videos',
+    imageUrl: Images.Videos,
+    navigate: 'BrandVideosScreen',
+  },
+  {
+    title: 'Ask Questions',
+    imageUrl: Images.Questions,
+    navigate: 'AskQuestionsScreen',
+  },
+  {title: 'Voting', imageUrl: Images.Voting, navigate: 'VotingScreen'},
+  {
+    title: 'Social Media',
+    imageUrl: Images.Social,
+    navigate: 'SocialMediaScreen',
+  },
+  {title: 'Survey', imageUrl: Images.Survey, navigate: 'SurveyScreen'},
+  {title: 'CME', imageUrl: Images.CME, navigate: 'CMEScreen'},
+  {title: 'More', imageUrl: Images.More, navigate: 'MoreScreen'},
 ];
 
 const itemColors = ['#0ea5e9', '#94a3b8', '#075985'];
@@ -32,7 +48,7 @@ const HomeScreen = () => {
           style={{aspectRatio: 1, backgroundColor: bgColor}}
           className="  rounded-[20px] ">
           <TouchableOpacity
-            onPress={() => navigation.navigate('AgendaScreen')}
+            onPress={() => navigation.navigate(item.navigate)}
             className="w-full h-full items-center justify-center">
             <Image source={item.imageUrl} className="w-full h-full" />
           </TouchableOpacity>
