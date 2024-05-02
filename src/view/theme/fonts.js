@@ -1,6 +1,6 @@
 const FontTypes = {
   primary: 'poppins',
-  seconday: 'poppins',
+  secondary: 'poppins',
 };
 
 export {FontTypes};
