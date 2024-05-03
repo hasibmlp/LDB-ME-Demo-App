@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -20,22 +20,26 @@ import ToastMessage from '../../common/notification/ToastMessage';
 import ListPicker from '../../common/modal/ListPicker';
 
 import countryData from '../../config/countriesData.json';
+import {FontTypes} from '../../theme/fonts';
+import {AuthContext} from '../../../core/redux/provider/authProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const countries = countryData.map(item => ({
   label: `${item.emoji}  ${item.name}`,
   value: {value: item.code, symbol: item.symbol},
   name: item.code,
+  v: item.name,
 }));
 
 const registerValidationSchema = Yup.object({
-  fullName: Yup.string().required(),
+  username: Yup.string().required(),
   email: Yup.string().email().required(),
   password: Yup.string().required(),
   speciality: Yup.string(),
-  phone: Yup.string().required(),
-  instagram: Yup.string(),
-  tiktok: Yup.string(),
-  acceptsTerms: Yup.boolean(),
+  mobile: Yup.string().required(),
+  instagramLink: Yup.string(),
+  tikTokLink: Yup.string(),
+  userconsent: Yup.string(),
 });
 
 const specialityData = [
@@ -44,12 +48,14 @@ const specialityData = [
     labelMiddle: 'Doctor',
     value: 'Doctor',
     name: 'Doctor',
+    v: 'doctor',
   },
   {
     label: 'Engineer',
     labelMiddle: 'Engineer',
     value: 'Engineer',
     name: 'Engineer',
+    v: 'doctor',
   },
 ];
 
@@ -58,20 +64,67 @@ const RegisterScreen = ({handleRegister}) => {
   const [status, setStatus] = useState({});
 
   const navigation = useNavigation();
+  const {handleSignIn} = useContext(AuthContext);
 
   const [isCountryModalVisible, setCountryModalVisible] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState(
+    countries.find(item => item.v === 'United Arab Emirates'),
+  );
 
   const [isSpecialiyModalVisible, setSpecialiyModalVisible] = useState(false);
-  const [selectedSpecialiy, setSelectedSpecialiy] = useState(null);
+  const [selectedSpecialiy, setSelectedSpecialiy] = useState(specialityData[0]);
 
   const onCountryChange = item => {
     setSelectedCountry(item);
     setCountryModalVisible(false);
   };
 
+  const onLogin = async values => {
+    const response = await fetch(
+      'https://ldb-me.ve-live.com/api/AdminApiProvider/UserLogin',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      },
+    );
+
+    if (!response.ok) {
+      setStatus({
+        message: 'Some thing went wrong, Please try again',
+        status: 'error',
+      });
+      setLoading(false);
+    }
+
+    const data = await response.json();
+
+    console.log(JSON.stringify(data, null, 2));
+
+    if (
+      !data.Useruniqueid ||
+      data.Useruniqueid === '0' ||
+      data.Useruniqueid === '' ||
+      data.Useruniqueid === null ||
+      data.Status === false
+    ) {
+      setStatus({message: data.Message, status: false});
+      setLoading(false);
+      return;
+    }
+
+    handleSignIn(data);
+    AsyncStorage.setItem('@userKey', data.Useruniqueid);
+    AsyncStorage.setItem('@user', JSON.stringify(data));
+    // navigation.navigate('MyDrawer');
+    setStatus({message: data.Message, status: data.Status});
+    setLoading(false);
+  };
+
   const onRegister = async values => {
-    console.log('hello whlfd sfhalsfnl lsdhfd');
+    console.log('REGISTERING...', JSON.stringify(values, null, 2));
     setLoading(true);
     const response = await fetch(
       'https://ldb-me.ve-live.com/api/AdminApiProvider/RegisterUser',
@@ -84,13 +137,12 @@ const RegisterScreen = ({handleRegister}) => {
       },
     );
 
-    setLoading(false);
-
     if (!response.ok) {
       setStatus({
         message: 'Some thing went wrong, Please try again',
         status: false,
       });
+      setLoading(false);
     }
 
     const data = await response.json();
@@ -99,12 +151,19 @@ const RegisterScreen = ({handleRegister}) => {
 
     if (data?.Useruniqueid === '0' || data?.Useruniqueid === null) {
       setStatus({message: data.Message, status: false});
+      setLoading(false);
       return;
     }
 
+    console.log(JSON.stringify(data, null, 2));
+
+    onLogin({email: values.email, password: values.password});
     console.log('resutl ', JSON.stringify(data, null, 2));
     setStatus({message: data.Message, status: data.Status});
   };
+
+  console.log('--=-=-=-=--=-=-=-=-=-=-=-==-=-=-=-=', selectedSpecialiy);
+  console.log('--=-=-=-=--=-=-=-=-=-=-=-==-=-=-=-=', selectedCountry);
 
   return (
     <>
@@ -119,21 +178,32 @@ const RegisterScreen = ({handleRegister}) => {
           keyboardShouldPersistTaps="handled"
           className="w-full h-full"
           showsVerticalScrollIndicator={false}>
-          <View className="flex-1 w-full px-6 pt-10 pb-40">
+          <View className="flex-1 w-full px-10 pb-40">
+            <View className="mb-5 items-center mt-3">
+              <Text
+                style={{fontFamily: FontTypes.secondary}}
+                className="text-lg text-[#000] uppercase font-bold">
+                Register
+              </Text>
+            </View>
+
             <Formik
               initialValues={{
-                fullName: '',
+                username: '',
                 email: '',
                 password: '',
-                speciality: selectedSpecialiy?.value ?? '',
-                country: selectedCountry?.value ?? '',
-                phone: '',
-                instagram: '',
-                tiktok: '',
-                acceptsTerms: false,
+                speciality: selectedSpecialiy?.v ?? '',
+                country: selectedCountry?.v ?? '',
+                mobile: '',
+                instagramLink: '',
+                tikTokLink: '',
+                userconsent: false,
               }}
               validationSchema={registerValidationSchema}
               onSubmit={values => {
+                values.country = selectedCountry?.v ?? 'United Arab Emirates';
+
+                values.speciality = selectedSpecialiy?.v ?? 'doctor';
                 onRegister(values);
               }}>
               {({
@@ -148,14 +218,14 @@ const RegisterScreen = ({handleRegister}) => {
                 return (
                   <View>
                     <MyTextInput
-                      handleChange={handleChange('fullName')}
-                      handleBlur={handleBlur('fullName')}
-                      value={values.fullName}
+                      handleChange={handleChange('username')}
+                      handleBlur={handleBlur('username')}
+                      value={values.username}
                       isSecureTextEntry={false}
-                      error={errors.fullName}
-                      touched={touched.fullName}
+                      error={errors.username}
+                      touched={touched.username}
                       label="Full Name"
-                      captionText="Enter Full Name*"
+                      captionText="Enter Full Name *"
                     />
 
                     <MyTextInput
@@ -167,7 +237,7 @@ const RegisterScreen = ({handleRegister}) => {
                       touched={touched.email}
                       keyboardType="email-address"
                       label="Email"
-                      captionText="Enter a valid email*"
+                      captionText="Enter a valid Email *"
                     />
 
                     <MyTextInput
@@ -178,78 +248,87 @@ const RegisterScreen = ({handleRegister}) => {
                       error={errors.password}
                       touched={touched.password}
                       label="Password"
-                      captionText="Enter a password*"
+                      captionText="Enter a Password *"
                     />
 
                     <TouchableOpacity
                       onPress={() => setSpecialiyModalVisible(true)}>
-                      <View className="flex-row items-center justify-between py-1 pb-2 mt-4 ">
-                        <View>
+                      <View className="w-full flex-row items-center justify-between py-1 pb-2 mt-4  ">
+                        <View className="w-full ">
+                          <View className="w-full flex-row justify-between ">
+                            <Text className="text-base text-black">
+                              Select Speciality *
+                            </Text>
+                            <ChevronUpDownIcon size={24} color="black" />
+                          </View>
                           <Text className="text-base text-black">
-                            Select Speciality*
-                          </Text>
-                          <Text className="text-base text-black">
-                            {selectedSpecialiy?.label || 'Specialiry*'}
+                            {selectedSpecialiy?.label}
                           </Text>
                         </View>
-                        <ChevronUpDownIcon size={24} color="black" />
                       </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                       onPress={() => setCountryModalVisible(true)}>
-                      <View className="flex-row items-center justify-between py-1 pb-2 mt-4 ">
-                        <View>
+                      <View className="w-full flex-row items-center justify-between mt-1 py-1 pb-2 ">
+                        <View className="w-full ">
+                          <View className="w-full flex-row justify-between ">
+                            <Text className="text-base text-black">
+                              Select Country *
+                            </Text>
+                            <ChevronUpDownIcon size={24} color="black" />
+                          </View>
                           <Text className="text-base text-black">
-                            Select Country*
-                          </Text>
-                          <Text className="text-base text-black">
-                            {selectedCountry?.label ?? 'Select'}
+                            {selectedCountry?.label}
                           </Text>
                         </View>
-                        <ChevronUpDownIcon size={24} color="black" />
                       </View>
                     </TouchableOpacity>
 
                     <MyTextInput
-                      handleChange={handleChange('phone')}
-                      handleBlur={handleBlur('phone')}
-                      value={values.phone}
+                      handleChange={handleChange('mobile')}
+                      handleBlur={handleBlur('mobile')}
+                      value={values.mobile}
                       isSecureTextEntry={false}
-                      error={errors.phone}
-                      touched={touched.phone}
+                      error={errors.mobile}
+                      touched={touched.mobile}
                       label="Mobile Number"
-                      captionText="Enter Mobile Number*"
+                      captionText="Enter Mobile Number *"
                     />
 
                     <MyTextInput
-                      handleChange={handleChange('instagram')}
-                      handleBlur={handleBlur('instagram')}
-                      value={values.instagram}
+                      handleChange={handleChange('instagramLink')}
+                      handleBlur={handleBlur('instagramLink')}
+                      value={values.instagramLink}
                       isSecureTextEntry={false}
-                      error={errors.instagram}
-                      touched={touched.instagram}
-                      label="Instagram @"
-                      captionText="Instagram@"
+                      error={errors.instagramLink}
+                      touched={touched.instagramLink}
+                      label="Instagram"
+                      captionText="Instagram start with @"
                     />
 
                     <MyTextInput
-                      handleChange={handleChange('tiktok')}
-                      handleBlur={handleBlur('tiktok')}
-                      value={values.tiktok}
+                      handleChange={handleChange('tikTokLink')}
+                      handleBlur={handleBlur('tikTokLink')}
+                      value={values.tikTokLink}
                       isSecureTextEntry={false}
-                      error={errors.tiktok}
-                      touched={touched.tiktok}
-                      label="Tiktok @"
-                      captionText="Tiktok @"
+                      error={errors.tikTokLink}
+                      touched={touched.tikTokLink}
+                      label="Tiktok"
+                      captionText="Tiktok start with @"
                     />
 
-                    <View className="flex-row items-center my-3 mb-6 w-full justify-between px-4">
+                    <View className="flex-row items-center my-3  w-full justify-between ">
                       <TouchableOpacity
                         onPress={() =>
-                          setFieldValue('acceptsTerms', !values.acceptsTerms)
+                          setFieldValue(
+                            'userconsent',
+                            values.userconsent === 'true' ? 'false' : 'true',
+                          )
                         }>
-                        <CheckBoxCircle active={values.acceptsTerms} />
+                        <CheckBoxCircle
+                          active={values.userconsent === 'true'}
+                        />
                       </TouchableOpacity>
 
                       <Text className="text-sm text-neutral-500 ml-4 pr-5">
@@ -263,11 +342,14 @@ const RegisterScreen = ({handleRegister}) => {
                       </Text>
                     </View>
 
-                    <MyButton
-                      onPress={handleSubmit}
-                      loading={loading}
-                      active={values.acceptsTerms}
-                    />
+                    <View className="mt-5">
+                      <MyButton
+                        title="Register"
+                        onPress={handleSubmit}
+                        loading={loading}
+                        active={values.userconsent === 'true'}
+                      />
+                    </View>
                   </View>
                 );
               }}
@@ -303,21 +385,21 @@ const RegisterScreen = ({handleRegister}) => {
 
 export default RegisterScreen;
 
-const MyButton = ({onPress, loading, active}) => {
+const MyButton = ({title, onPress, loading, active}) => {
   const renderBody = () => {
     if (loading) {
       return <ActivityIndicator color="white" />;
     }
 
-    return <Text className="text-lg text-white">hello</Text>;
+    return <Text className="text-lg text-white">{title}</Text>;
   };
   return (
     <TouchableOpacity
-      disabled={!active}
+      disabled={!active || loading}
       onPress={onPress}
       style={{
         backgroundColor: Colors.secondary,
-        opacity: !active && 0.3,
+        opacity: !active && 0.5,
         paddingVertical: 14,
         borderRadius: 14,
         alignItems: 'center',

@@ -24,8 +24,6 @@ const ListPicker = ({
   const [searchResult, setSearchResult] = useState(items);
   const [searchQuery, setSearchQuery] = useState(items);
 
-  console.log(searchResult);
-
   const onSearchInput = values => {
     setSearchQuery(values);
     setSearchResult(

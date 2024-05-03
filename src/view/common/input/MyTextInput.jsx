@@ -102,7 +102,7 @@ const MyTextInput = ({
               //   onPress={() => setHidePassword(true)}
               // />
               <TouchableOpacity onPress={() => setHidePassword(true)}>
-                <View className="p-2 pb-4">
+                <View className="p-2 pb-4 pr-0">
                   <EyeSlashIcon color="black" size={20} />
                 </View>
               </TouchableOpacity>
@@ -115,7 +115,7 @@ const MyTextInput = ({
               //   onPress={() => setHidePassword(false)}
               // />
               <TouchableOpacity onPress={() => setHidePassword(false)}>
-                <View className="p-2 pb-4">
+                <View className="p-2 pb-4 pr-0 ">
                   <EyeIcon color="black" size={20} />
                 </View>
               </TouchableOpacity>

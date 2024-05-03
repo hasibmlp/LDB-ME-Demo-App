@@ -11,13 +11,9 @@ const SpeakerDetailScreen = ({route}) => {
 
   return (
     <View className="bg-neutral-100">
-      <View className="px-1">
-        <View className="mb-5">
-          <AutoHeightImage
-            source={Images.Logo.LogoBanner}
-            width={1000}
-            height={500}
-          />
+      <View className="px-24">
+        <View className="w-full aspect-square">
+          <Image className="w-full h-full" source={Images.Logo.LogoBanner} />
         </View>
       </View>
 

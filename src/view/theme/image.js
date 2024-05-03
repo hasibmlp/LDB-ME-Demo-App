@@ -16,7 +16,7 @@ import Social from '../assets/images/social.png';
 
 import qrCode from '../assets/images/other/qrcode.png';
 
-import LogoBanner from '../assets/images/logo/faduimage.jpeg';
+import LogoBanner from '../assets/images/logo/bannerimage.png';
 import LogoTitle from '../assets/images/logo/banner.png';
 
 const TitleImage = {

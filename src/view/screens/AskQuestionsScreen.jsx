@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   ActivityIndicator,
+  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -15,6 +16,7 @@ import {Colors} from '../theme/colors';
 import {ChevronUpDownIcon} from 'react-native-heroicons/outline';
 import ListPicker from '../common/modal/ListPicker';
 import ToastMessage from '../common/notification/ToastMessage';
+import {AuthContext} from '../../core/redux/provider/authProvider';
 
 // const data = [
 //   {
@@ -215,16 +217,28 @@ const data = result.map(item => ({
 }));
 
 const AskQuestionsScreen = () => {
+  const {user} = useContext(AuthContext);
+
+  let parsedUser = {};
+  if (typeof user === 'string' && user !== '') {
+    parsedUser = JSON.parse(user) ?? {};
+  } else if (typeof user === 'object') {
+    parsedUser = user;
+  }
+
   const [isModalVisible, setIsModalVisible] = useState();
   const [Session, setSession] = useState({});
+
   const [values, setValues] = useState({
-    SpeakerName: '',
-    AskedBy: '',
+    SpeakerName: data[0].value ?? '',
+    AskedBy: parsedUser?.DoctorName ?? '',
     QuestionDetail: '',
   });
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({});
+
+  console.log('ASKED QUESTIONS: ', JSON.stringify(values, null, 2));
 
   const onSubmit = async () => {
     setLoading(true);
@@ -259,7 +273,10 @@ const AskQuestionsScreen = () => {
       if (!resData.eventid) {
         setStatus({message: resData.Message, status: 'error'});
       } else {
-        setStatus({message: 'Message Sent', status: resData.Status});
+        setStatus({
+          message: 'Your question has been submitted.',
+          status: resData.Status,
+        });
       }
     } catch (error) {
       console.error('Error submitting question:', error);
@@ -281,15 +298,16 @@ const AskQuestionsScreen = () => {
       <ToastMessage status={status} />
 
       <ScrollView>
-        <View className="px-1">
-          <View className="mb-5">
-            <AutoHeightImage
-              source={Images.Logo.LogoBanner}
-              width={1000}
-              height={500}
-            />
+        <View className="px- pb-40">
+          <View className="px-24">
+            <View className="w-full aspect-square">
+              <Image
+                className="w-full h-full"
+                source={Images.Logo.LogoBanner}
+              />
+            </View>
           </View>
-          <View className="border-b border-neutral-300 mb-3">
+          <View className="border-b border-neutral-300 mb-4">
             <Text
               style={{color: Colors.primary}}
               className="text-4xl font-bold text-center pb-3">
@@ -298,35 +316,35 @@ const AskQuestionsScreen = () => {
           </View>
 
           <View className="px-4">
-            <View className="mb-3 ">
-              <Text className="text-lg mb-2">Session</Text>
+            <View className="mb-4 ">
+              <Text className="text-base mb-2 text-black">Session</Text>
               <TouchableOpacity onPress={() => setIsModalVisible(true)}>
-                <View className="py-5 px-2 bg-blue-100 rounded-lg flex-row items-center">
+                <View className="py-[14px] px-2 bg-blue-100 rounded-lg flex-row items-center">
                   <ChevronUpDownIcon size={20} color="black" />
-                  <Text className="text-lg text-black ml-4">
+                  <Text className="text-base text-black ml-4">
                     {values.SpeakerName || 'select'}
                   </Text>
                 </View>
               </TouchableOpacity>
             </View>
-            <View className="mb-3 ">
-              <Text className="text-lg mb-2">Your Name</Text>
+            <View className="mb-4 ">
+              <Text className="text-base text-black mb-2">Your Name</Text>
               <TextInput
                 onChangeText={value =>
                   setValues(prev => ({...prev, AskedBy: value}))
                 }
                 value={values.AskedBy}
-                className="py-5 px-4 bg-blue-100 rounded-lg"
+                className="py-[14px] px-4 text-base bg-blue-100 rounded-lg"
               />
             </View>
             <View className="mb-6">
-              <Text className="text-lg mb-2">Ask Question</Text>
+              <Text className="text-base mb-2 text-black">Ask Question</Text>
               <TextInput
                 onChangeText={value =>
                   setValues(prev => ({...prev, QuestionDetail: value}))
                 }
                 value={values.QuestionDetail}
-                className="py-5 px-4 bg-blue-100 rounded-lg"
+                className="py-[14px] px-4 bg-blue-100 text-base rounded-lg min-h-20"
                 multiline={true}
               />
             </View>
@@ -363,12 +381,12 @@ const MyButton = ({onPress, loading, active = true}) => {
     }
 
     return (
-      <Text className="text-lg text-white uppercase font-medium">Submit</Text>
+      <Text className="text-lg text-white font-medium">Submit Question</Text>
     );
   };
   return (
     <TouchableOpacity
-      disabled={!active}
+      disabled={!active || loading}
       onPress={onPress}
       style={{
         backgroundColor: Colors.secondary,

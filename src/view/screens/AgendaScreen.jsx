@@ -712,14 +712,13 @@ export default AgendaScreen;
 
 const Header = memo(({activeTab, setActiveTab, tabs}) => {
   return (
-    <View className="px-1">
-      <View className="mb-3">
-        <AutoHeightImage
-          source={Images.Logo.LogoBanner}
-          width={1000}
-          height={500}
-        />
+    <View className="">
+      <View className="px-24">
+        <View className="w-full aspect-square">
+          <Image className="w-full h-full" source={Images.Logo.LogoBanner} />
+        </View>
       </View>
+
       <Text
         style={{color: Colors.primary}}
         className="text-4xl font-bold text-center pb-3">

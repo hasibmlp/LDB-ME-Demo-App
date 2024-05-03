@@ -36,7 +36,7 @@ const LoginScreen = ({}) => {
   const navigation = useNavigation();
 
   const onLogin = async values => {
-    console.log(values);
+    console.log('----------------------------------------', values);
     setLoading(true);
     const response = await fetch(
       'https://ldb-me.ve-live.com/api/AdminApiProvider/UserLogin',
@@ -69,7 +69,7 @@ const LoginScreen = ({}) => {
       data.Useruniqueid === null ||
       data.Status === false
     ) {
-      setStatus({message: data.Message, status: false});
+      setStatus({message: 'Wrong email or password', status: false});
       return;
     }
 
@@ -94,13 +94,13 @@ const LoginScreen = ({}) => {
           <View className="flex-1 w-full px-10 ">
             <View className="mt-32 mb-20 items-center">
               <Image
-                className="w-full h-[50] scale-150"
+                className="w-full h-[50] scale-[2]"
                 source={Images.Logo.LogoTitle}
               />
               <Text
                 style={{fontFamily: FontTypes.secondary}}
-                className="text-lg text-[#000] uppercase mt-3">
-                Hello
+                className="text-lg text-[#000] uppercase mt-3 font-bold">
+                Log in
               </Text>
             </View>
 
@@ -142,9 +142,11 @@ const LoginScreen = ({}) => {
                     error={errors.password}
                     touched={touched.password}
                     label="Password"
-                    captionText="Enter a valid email"
+                    captionText="Enter a password"
                   />
-                  <MyButton onPress={handleSubmit} loading={loading} />
+                  <View className="mt-5">
+                    <MyButton onPress={handleSubmit} loading={loading} />
+                  </View>
                 </>
               )}
             </Formik>
@@ -170,11 +172,11 @@ const MyButton = ({onPress, loading, active = true}) => {
       return <ActivityIndicator color="white" />;
     }
 
-    return <Text className="text-lg text-white">hello</Text>;
+    return <Text className="text-lg text-white">Login</Text>;
   };
   return (
     <TouchableOpacity
-      disabled={!active}
+      disabled={!active || loading}
       onPress={onPress}
       style={{
         backgroundColor: Colors.secondary,

@@ -238,7 +238,6 @@ const SpeakersScreen = () => {
   console.log(JSON.stringify(speakersData, null, 2));
 
   const renderItem = ({item, index}) => {
-    console.log(item.speaker_image);
     if (item.id !== null) {
       return (
         <TouchableOpacity
@@ -449,13 +448,13 @@ export default SpeakersScreen;
 
 const Header = memo(() => {
   return (
-    <View className="px-1">
+    <View className="">
       <View className="mb-5">
-        <AutoHeightImage
-          source={Images.Logo.LogoBanner}
-          width={1000}
-          height={500}
-        />
+        <View className="px-24">
+          <View className="w-full aspect-square">
+            <Image className="w-full h-full" source={Images.Logo.LogoBanner} />
+          </View>
+        </View>
       </View>
       <View className="border-b border-neutral-300 mb-3">
         <Text

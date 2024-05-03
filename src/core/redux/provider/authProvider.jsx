@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {createContext, useState, useContext} from 'react';
 
 const AuthContext = createContext({
@@ -19,7 +20,13 @@ const AuthProvider = ({children}) => {
   };
 
   const handleSignOut = () => {
-    setUser(null);
+    try {
+      AsyncStorage.removeItem('@user');
+      AsyncStorage.removeItem('@userKey');
+      setUser(null);
+    } catch (error) {
+      console.log('ERROR LOGOUT USER', error);
+    }
   };
 
   return (
