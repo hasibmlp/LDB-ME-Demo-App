@@ -21,10 +21,14 @@ const ListPicker = ({
   value,
   presentation = 'bottomModal',
 }) => {
+  const [searchResult, setSearchResult] = useState(items);
   const [searchQuery, setSearchQuery] = useState(items);
 
+  console.log(searchResult);
+
   const onSearchInput = values => {
-    setSearchQuery(
+    setSearchQuery(values);
+    setSearchResult(
       items.filter(
         item =>
           item.labelMiddle?.toLowerCase()?.includes(values?.toLowerCase()) ??
@@ -100,6 +104,7 @@ const ListPicker = ({
               className={` flex-1 text-${I18nManager.isRTL ? 'right' : 'left'}`}
               placeholder="Search Country"
               onChangeText={onSearchInput}
+              value={searchQuery}
             />
           </View>
           <TouchableOpacity
@@ -114,13 +119,13 @@ const ListPicker = ({
         </View>
 
         <FlatList
-          data={searchQuery}
+          data={searchResult}
           keyExtractor={(_, index) => index.toString()}
           renderItem={renderItem}
           contentContainerStyle={{flexGrow: 1, paddingBottom: 100}}
         />
 
-        {/* {searchQuery.map((item, index) => (
+        {/* {searchResult.map((item, index) => (
           <View
             key={`${index}`}
             className={`h-14 w-full items-center justify-center ${

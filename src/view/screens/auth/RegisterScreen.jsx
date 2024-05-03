@@ -10,23 +10,19 @@ import {
 } from 'react-native';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 import MyTextInput from '../../common/input/MyTextInput';
 import {Colors} from '../../theme/colors';
-import {
-  ChevronDownIcon,
-  ChevronUpDownIcon,
-} from 'react-native-heroicons/outline';
+import {ChevronUpDownIcon} from 'react-native-heroicons/outline';
 import CheckBoxCircle from '../../common/checkbox/CheckBoxCircle';
 import ToastMessage from '../../common/notification/ToastMessage';
 import ListPicker from '../../common/modal/ListPicker';
 
 import countryData from '../../config/countriesData.json';
-import {useNavigation} from '@react-navigation/native';
 
 const countries = countryData.map(item => ({
-  label: item.name,
+  label: `${item.emoji}  ${item.name}`,
   value: {value: item.code, symbol: item.symbol},
   name: item.code,
 }));
@@ -187,30 +183,31 @@ const RegisterScreen = ({handleRegister}) => {
 
                     <TouchableOpacity
                       onPress={() => setSpecialiyModalVisible(true)}>
-                      <View className="flex-row items-center justify-between py-2 mt-4">
-                        <Text className="text-base text-black">
-                          {selectedSpecialiy?.label || 'Select Speciality*'}
-                        </Text>
+                      <View className="flex-row items-center justify-between py-1 pb-2 mt-4 ">
+                        <View>
+                          <Text className="text-base text-black">
+                            Select Speciality*
+                          </Text>
+                          <Text className="text-base text-black">
+                            {selectedSpecialiy?.label || 'Specialiry*'}
+                          </Text>
+                        </View>
                         <ChevronUpDownIcon size={24} color="black" />
                       </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                       onPress={() => setCountryModalVisible(true)}>
-                      <View className="flex-row items-center justify-between py-1 pb-2 mt-4 pr-1">
+                      <View className="flex-row items-center justify-between py-1 pb-2 mt-4 ">
                         <View>
                           <Text className="text-base text-black">
-                            Select Speciality*
+                            Select Country*
                           </Text>
                           <Text className="text-base text-black">
                             {selectedCountry?.label ?? 'Select'}
                           </Text>
                         </View>
-                        <ChevronDownIcon
-                          size={16}
-                          color="black"
-                          strokeWidth={2}
-                        />
+                        <ChevronUpDownIcon size={24} color="black" />
                       </View>
                     </TouchableOpacity>
 
@@ -255,12 +252,14 @@ const RegisterScreen = ({handleRegister}) => {
                         <CheckBoxCircle active={values.acceptsTerms} />
                       </TouchableOpacity>
 
-                      <Text className="text-sm text-neutral-500 ml-4">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Excepturi, eligendi voluptatibus velit cumque
-                        voluptates, dolor vitae cupiditate repudiandae quasi
-                        maxime sed sunt? Odio officiis nisi sunt repellendus
-                        sint, itaque culpa.
+                      <Text className="text-sm text-neutral-500 ml-4 pr-5">
+                        By clicking this box you give your consent to l'Orial to
+                        process the provided data to the following puropose.
+                        Filling l'Orial requirement to read and record the
+                        identity of the address is in actives and event use for
+                        compliance prupose and replicating accoridng to l'Orial
+                        and country specific. compliance regulation and code of
+                        conduct
                       </Text>
                     </View>
 

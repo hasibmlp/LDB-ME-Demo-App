@@ -1,5 +1,21 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {
+  HomeIcon,
+  UserIcon,
+  CalendarIcon,
+  MapPinIcon,
+  VideoCameraIcon,
+  QuestionMarkCircleIcon,
+  ShareIcon,
+  AcademicCapIcon,
+  ChartBarIcon,
+  QrCodeIcon,
+  PhotoIcon,
+  EllipsisHorizontalIcon,
+} from 'react-native-heroicons/outline';
+import {Bars3Icon} from 'react-native-heroicons/outline';
+
 import HomeScreen from '../screens/HomeScreen';
 import AgendaScreen from '../screens/AgendaScreen';
 import SpeakerStack from './SpeakerStack';
@@ -14,9 +30,8 @@ import SurveyScreen from '../screens/SurveyScreen';
 import CMEScreen from '../screens/CMEScreen';
 
 import BackIconButton from '../common/icons/BackIconButton';
-import {View} from 'react-native';
-import {Bars3Icon} from 'react-native-heroicons/outline';
 import BarsIconButton from '../common/icons/BarsIconButton';
+import MoreScreen from '../screens/MoreScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,6 +46,7 @@ const MyDrawer = () => {
         component={HomeScreen}
         options={{
           drawerLabel: 'Home',
+          drawerIcon: HomeIcon,
           title: null,
           headerLeft: () => (
             <BarsIconButton style={{paddingHorizontal: 12}} color="white" />
@@ -43,6 +59,7 @@ const MyDrawer = () => {
         component={AgendaScreen}
         options={{
           drawerLabel: 'Agenda',
+          drawerIcon: CalendarIcon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
@@ -52,7 +69,9 @@ const MyDrawer = () => {
         name="SpeakerStack"
         component={SpeakerStack}
         options={{
+          drawerLabel: 'Speakers',
           headerShown: false,
+          drawerIcon: UserIcon,
         }}
       />
       <Drawer.Screen
@@ -60,6 +79,7 @@ const MyDrawer = () => {
         component={BadgeScreen}
         options={{
           drawerLabel: 'Badge',
+          drawerIcon: QrCodeIcon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
@@ -70,6 +90,7 @@ const MyDrawer = () => {
         component={VenueScreen}
         options={{
           drawerLabel: 'Venue',
+          drawerIcon: MapPinIcon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
@@ -80,6 +101,7 @@ const MyDrawer = () => {
         component={BrandInnovationScreen}
         options={{
           drawerLabel: 'Brand Innovations',
+          drawerIcon: PhotoIcon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
@@ -89,7 +111,8 @@ const MyDrawer = () => {
         name="BrandVideosScreen"
         component={BrandVideosScreen}
         options={{
-          drawerLabel: 'Brnad Videos',
+          drawerLabel: 'Brand Videos',
+          drawerIcon: VideoCameraIcon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
@@ -100,6 +123,7 @@ const MyDrawer = () => {
         component={AskQuestionsScreen}
         options={{
           drawerLabel: 'Ask Questions',
+          drawerIcon: QuestionMarkCircleIcon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
@@ -110,6 +134,7 @@ const MyDrawer = () => {
         component={VotingScreen}
         options={{
           drawerLabel: 'Voting',
+          drawerIcon: ChartBarIcon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
@@ -120,6 +145,7 @@ const MyDrawer = () => {
         component={SocialMediaScreen}
         options={{
           drawerLabel: 'Social',
+          drawerIcon: ShareIcon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
@@ -130,6 +156,7 @@ const MyDrawer = () => {
         component={SurveyScreen}
         options={{
           drawerLabel: 'Survey',
+          drawerIcon: Bars3Icon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
@@ -140,6 +167,18 @@ const MyDrawer = () => {
         component={CMEScreen}
         options={{
           drawerLabel: 'CME',
+          drawerIcon: AcademicCapIcon,
+          title: null,
+          headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
+          headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,
+        }}
+      />
+      <Drawer.Screen
+        name="MoreScreen"
+        component={MoreScreen}
+        options={{
+          drawerLabel: 'More',
+          drawerIcon: EllipsisHorizontalIcon,
           title: null,
           headerLeft: () => <BackIconButton style={{paddingHorizontal: 12}} />,
           headerRight: () => <BarsIconButton style={{paddingHorizontal: 12}} />,

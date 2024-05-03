@@ -460,9 +460,9 @@ const AgendaScreen = () => {
   const renderItem = ({item, index}) => {
     if (item.time !== ' - ' && item.time !== null) {
       return (
-        <View className="flex-row justify-between px-4 h-20 items-left items-center bg-cyan-50 border-b border-cyan-500">
+        <View className="flex-row justify-between px-4 py-5 items-left items-center bg-cyan-50 border-b border-cyan-500">
           <Text className="text-left w-40 text-black">{item.time}</Text>
-          <View className="flex-1 gap-y-1">
+          <View className="flex-1 gap-y-2">
             <Text className="text-left text-black">{item.topic}</Text>
             {item.speaker_name && (
               <Text className="text-left text-black font-semibold">

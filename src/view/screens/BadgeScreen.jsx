@@ -36,13 +36,16 @@ const BadgeScreen = ({route}) => {
         </View>
       </View>
 
-      <View className="justify-center items-center py-5 speakers-center bg-white mx-4 shadow-2xl rounded-lg">
+      <View
+        style={{shadowRadius: 1, shadowColor: '#ddd'}}
+        className="justify-center items-center py-5 speakers-center bg-white mx-4 shadow-2xl rounded-lg">
         <View className="w-[340] h-[340] ">
           <Image
             className="w-full h-full"
-            source={{
-              uri: user?.QrCode,
-            }}
+            // source={{
+            //   uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.nytimes.com%2F2021%2F09%2F07%2Fscience%2Fcat-stripes-genetics.html&psig=AOvVaw3yAL1qyCNCfR37s2PowbvH&ust=1714805729253000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCLjrrqTz8IUDFQAAAAAdAAAAABAE',
+            // }}
+            source={Images.Other.qrCode}
           />
         </View>
 
