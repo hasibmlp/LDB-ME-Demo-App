@@ -74,9 +74,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.eventapp"
+    namespace "com.eventapp.haseeborg"
     defaultConfig {
-        applicationId "com.eventapp"
+        applicationId "com.eventapp.haseeborg"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

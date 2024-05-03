@@ -26,7 +26,7 @@ const AppNavigation = () => {
         BootSplash.hide();
       }}>
       <Stack.Navigator>
-        <>
+        {/* <>
           <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
@@ -43,7 +43,7 @@ const AppNavigation = () => {
               headerStyle: {backgroundColor: 'white'},
             }}
           />
-        </>
+        </> */}
         <Stack.Screen
           name="MyDrawer"
           component={MyDrawer}

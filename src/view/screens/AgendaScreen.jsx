@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {Dimensions, FlatList, Image, Text, View} from 'react-native';
 import TabHeader from '../common/TabHeader';
 import {Images} from '../theme/image';
@@ -449,30 +449,13 @@ const result = [
   },
 ];
 
-const uniqueDaysSet = new Set();
-
-const tabs = result.reduce((prev, item) => {
-  const {day, Title} = item;
-  const dayKey = `${day}`;
-
-  if (day !== '' && !uniqueDaysSet.has(dayKey)) {
-    uniqueDaysSet.add(dayKey);
-    prev.push({
-      id: day,
-      title: {value: Title},
-    });
-  }
-
-  return prev;
-}, []);
-
-console.log(tabs);
-
 const screenWidth = Dimensions.get('window').width;
 
 const AgendaScreen = () => {
-  const [activeTab, setActiveTab] = useState(tabs[0]);
-  const [loading, setLoading] = useState(false);
+  const [angendaData, setAgendaData] = useState([]);
+  const [activeTab, setActiveTab] = useState();
+  const [tabs, setTabs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const renderItem = ({item, index}) => {
     if (item.time !== ' - ' && item.time !== null) {
@@ -491,6 +474,72 @@ const AgendaScreen = () => {
       );
     }
   };
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          'https://ldb-me.ve-live.com/api/AdminApiProvider/LoadAgenda?EventId=1',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('Error fetching speakers data');
+        }
+
+        const data = await response.json();
+
+        if (data) {
+          setAgendaData(data.Data?.Result);
+        }
+      } catch (error) {
+        console.error('Error fetching speakers data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    init();
+  }, []);
+  // console.log('AGENDA DATA', JSON.stringify(angendaData, null, 2));
+
+  useEffect(() => {
+    if (angendaData.length > 0) {
+      try {
+        setLoading(true);
+        const uniqueDaysSet = new Set();
+
+        const tabsData = result.reduce((prev, item) => {
+          const {day, Title} = item || {};
+
+          if (day !== '' && !uniqueDaysSet.has(`${day}`)) {
+            uniqueDaysSet.add(`${day}`);
+            prev.push({
+              id: day,
+              title: {value: Title},
+            });
+          }
+
+          return prev;
+        }, []);
+
+        console.log('AGENDA DATA', JSON.stringify(tabsData, null, 2));
+        setTabs(tabsData);
+        setActiveTab(tabsData[0]);
+      } catch (error) {
+        console.error('Error processing agenda data:', error);
+        // Handle the error here (e.g., display an error message to the user)
+      } finally {
+        setLoading(false);
+      }
+    }
+  }, [angendaData.length]);
 
   if (loading) {
     return (
@@ -628,14 +677,25 @@ const AgendaScreen = () => {
     );
   }
 
+  if (angendaData.length === 0) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text>No Agenda</Text>
+      </View>
+    );
+  }
   return (
     <View className="bg-white">
       <FlatList
-        data={result.filter(item => item.day === activeTab.id)}
+        data={result.filter(item => item.day === activeTab?.id)}
         keyExtractor={(_, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+          <Header
+            tabs={tabs}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
         }
         renderItem={renderItem}
         contentContainerStyle={{
@@ -650,7 +710,7 @@ const AgendaScreen = () => {
 
 export default AgendaScreen;
 
-const Header = memo(({activeTab, setActiveTab}) => {
+const Header = memo(({activeTab, setActiveTab, tabs}) => {
   return (
     <View className="px-1">
       <View className="mb-3">

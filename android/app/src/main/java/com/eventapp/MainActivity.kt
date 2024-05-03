@@ -1,4 +1,4 @@
-package com.eventapp
+package com.eventapp.haseeborg
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

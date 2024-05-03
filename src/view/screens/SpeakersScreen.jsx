@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -193,33 +193,49 @@ const result = [
   },
 ];
 
-const uniqueDaysSet = new Set();
-
-const tabs = result.reduce((prev, item) => {
-  const {day, Title} = item;
-  const dayKey = `${day}`;
-
-  if (day !== '' && !uniqueDaysSet.has(dayKey)) {
-    uniqueDaysSet.add(dayKey);
-    prev.push({
-      id: day,
-      title: {value: Title},
-    });
-  }
-
-  return prev;
-}, []);
-
-console.log(tabs);
-
 const screenWidth = Dimensions.get('window').width;
 
 const SpeakersScreen = () => {
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [speakersData, setSpeakersData] = useState([]);
+
   const [loading, setLoading] = useState(false);
 
   const {width} = useWindowDimensions();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          'https://ldb-me.ve-live.com/api/AdminApiProvider/LoadSpeakers?EventId=1',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('Error fetching speakers data');
+        }
+
+        const data = await response.json();
+
+        if (data) {
+          setSpeakersData(data.Data?.Result);
+        }
+      } catch (error) {
+        console.error('Error fetching speakers data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    init();
+  }, []);
+  console.log(JSON.stringify(speakersData, null, 2));
 
   const renderItem = ({item, index}) => {
     if (item.id !== null) {
@@ -402,15 +418,21 @@ const SpeakersScreen = () => {
     );
   }
 
+  if (speakersData.length === 0) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text>No Speakers</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={{backgroundColor: Colors.backgroud}} className="bg-">
       <FlatList
         data={result}
         keyExtractor={(_, index) => index.toString()}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-        }
+        ListHeaderComponent={<Header />}
         renderItem={renderItem}
         contentContainerStyle={{
           flexGrow: 1,
@@ -424,7 +446,7 @@ const SpeakersScreen = () => {
 
 export default SpeakersScreen;
 
-const Header = memo(({activeTab, setActiveTab}) => {
+const Header = memo(() => {
   return (
     <View className="px-1">
       <View className="mb-5">
