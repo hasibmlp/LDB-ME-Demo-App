@@ -13,7 +13,6 @@ const AuthProvider = ({children}) => {
   const isLoggedIn = !!user;
 
   const handleSignIn = newUser => {
-    console.log('handle sign in login');
     setUser(newUser);
 
     return true;

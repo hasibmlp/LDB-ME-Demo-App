@@ -238,8 +238,6 @@ const AskQuestionsScreen = () => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({});
 
-  console.log('ASKED QUESTIONS: ', JSON.stringify(values, null, 2));
-
   const onSubmit = async () => {
     setLoading(true);
 
@@ -267,8 +265,6 @@ const AskQuestionsScreen = () => {
       }
 
       const resData = await response.json();
-
-      console.log(JSON.stringify(resData, null, 2));
 
       if (!resData.eventid) {
         setStatus({message: resData.Message, status: 'error'});

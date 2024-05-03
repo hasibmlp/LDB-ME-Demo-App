@@ -1,4 +1,4 @@
-package com.ldbme.haseeborg
+package com.ldbmev3.haseeborg
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

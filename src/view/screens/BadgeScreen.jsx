@@ -21,10 +21,7 @@ const BadgeScreen = ({route}) => {
     init();
   }, []);
 
-  console.log(JSON.stringify(user?.QrCode, null, 2));
   const {width} = useWindowDimensions();
-
-  console.log('BADGE SCREEN USER', user);
 
   return (
     <View className="bg-neutral-100">

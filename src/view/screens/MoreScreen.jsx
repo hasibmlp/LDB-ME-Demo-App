@@ -16,9 +16,6 @@ const MoreScreen = () => {
     parsedUser = user;
   }
 
-  console.log('--- Parsed User [MoreScreen.jsx]------');
-  console.log(JSON.stringify(parsedUser, null, 2));
-
   return (
     <View className="flex-1 items-center justify-center -translate-y-20">
       <EllipsisHorizontalIcon size={53} />

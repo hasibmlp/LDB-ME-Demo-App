@@ -507,7 +507,6 @@ const AgendaScreen = () => {
 
     init();
   }, []);
-  // console.log('AGENDA DATA', JSON.stringify(angendaData, null, 2));
 
   useEffect(() => {
     if (angendaData.length > 0) {
@@ -529,7 +528,6 @@ const AgendaScreen = () => {
           return prev;
         }, []);
 
-        console.log('AGENDA DATA', JSON.stringify(tabsData, null, 2));
         setTabs(tabsData);
         setActiveTab(tabsData[0]);
       } catch (error) {

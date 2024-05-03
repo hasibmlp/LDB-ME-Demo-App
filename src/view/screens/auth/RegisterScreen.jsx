@@ -101,8 +101,6 @@ const RegisterScreen = ({handleRegister}) => {
 
     const data = await response.json();
 
-    console.log(JSON.stringify(data, null, 2));
-
     if (
       !data.Useruniqueid ||
       data.Useruniqueid === '0' ||
@@ -124,7 +122,6 @@ const RegisterScreen = ({handleRegister}) => {
   };
 
   const onRegister = async values => {
-    console.log('REGISTERING...', JSON.stringify(values, null, 2));
     setLoading(true);
     const response = await fetch(
       'https://ldb-me.ve-live.com/api/AdminApiProvider/RegisterUser',
@@ -147,23 +144,15 @@ const RegisterScreen = ({handleRegister}) => {
 
     const data = await response.json();
 
-    console.log(JSON.stringify(data, null, 2));
-
     if (data?.Useruniqueid === '0' || data?.Useruniqueid === null) {
       setStatus({message: data.Message, status: false});
       setLoading(false);
       return;
     }
 
-    console.log(JSON.stringify(data, null, 2));
-
     onLogin({email: values.email, password: values.password});
-    console.log('resutl ', JSON.stringify(data, null, 2));
     setStatus({message: data.Message, status: data.Status});
   };
-
-  console.log('--=-=-=-=--=-=-=-=-=-=-=-==-=-=-=-=', selectedSpecialiy);
-  console.log('--=-=-=-=--=-=-=-=-=-=-=-==-=-=-=-=', selectedCountry);
 
   return (
     <>

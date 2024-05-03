@@ -36,7 +36,6 @@ const LoginScreen = ({}) => {
   const navigation = useNavigation();
 
   const onLogin = async values => {
-    console.log('----------------------------------------', values);
     setLoading(true);
     const response = await fetch(
       'https://ldb-me.ve-live.com/api/AdminApiProvider/UserLogin',
@@ -59,8 +58,6 @@ const LoginScreen = ({}) => {
     }
 
     const data = await response.json();
-
-    console.log(JSON.stringify(data, null, 2));
 
     if (
       !data.Useruniqueid ||

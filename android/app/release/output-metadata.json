@@ -1,18 +1,18 @@
 {
-  "version": 2,
+  "version": 1,
   "artifactType": {
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.ldbme.haseeborg",
+  "applicationId": "com.ldbmev3.haseeborg",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 2,
-      "versionName": "2.0",
+      "versionCode": 1,
+      "versionName": "1.0",
       "outputFile": "app-release.apk"
     }
   ],

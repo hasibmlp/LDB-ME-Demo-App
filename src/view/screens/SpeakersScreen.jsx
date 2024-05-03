@@ -235,7 +235,6 @@ const SpeakersScreen = () => {
 
     init();
   }, []);
-  console.log(JSON.stringify(speakersData, null, 2));
 
   const renderItem = ({item, index}) => {
     if (item.id !== null) {

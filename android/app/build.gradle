@@ -74,9 +74,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.ldbme.haseeborg"
+    namespace "com.ldbmev3.haseeborg"
     defaultConfig {
-        applicationId "com.ldbme.haseeborg"
+        applicationId "com.ldbmev3.haseeborg"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -32,8 +32,6 @@ const AppNavigation = () => {
     }
   };
 
-  console.log('app navigation');
-
   useEffect(() => {
     const init = async () => {
       await generateToken();
@@ -43,7 +41,6 @@ const AppNavigation = () => {
       setTimeout(() => {
         BootSplash.hide();
       }, 1);
-      console.log(' app init we');
     });
   }, []);
 
