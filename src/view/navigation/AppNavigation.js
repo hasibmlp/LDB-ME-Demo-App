@@ -40,7 +40,9 @@ const AppNavigation = () => {
     };
 
     init().finally(async () => {
-      BootSplash.hide();
+      setTimeout(() => {
+        BootSplash.hide();
+      }, 1);
       console.log(' app init');
     });
   }, []);

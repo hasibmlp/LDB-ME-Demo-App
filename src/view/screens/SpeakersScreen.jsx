@@ -238,6 +238,7 @@ const SpeakersScreen = () => {
   console.log(JSON.stringify(speakersData, null, 2));
 
   const renderItem = ({item, index}) => {
+    console.log(item.speaker_image);
     if (item.id !== null) {
       return (
         <TouchableOpacity
