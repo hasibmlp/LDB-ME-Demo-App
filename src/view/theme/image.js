@@ -17,7 +17,7 @@ import Social from '../assets/images/social.png';
 import qrCode from '../assets/images/other/qrcode.png';
 
 import LogoBanner from '../assets/images/logo/faduimage.jpeg';
-import LogoTitle from '../assets/images/logo/splash.png';
+import LogoTitle from '../assets/images/logo/banner.png';
 
 const TitleImage = {
   Agenda,

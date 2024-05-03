@@ -43,7 +43,7 @@ const AppNavigation = () => {
       setTimeout(() => {
         BootSplash.hide();
       }, 1);
-      console.log(' app init');
+      console.log(' app init we');
     });
   }, []);
 

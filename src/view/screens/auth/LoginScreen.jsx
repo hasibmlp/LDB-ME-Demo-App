@@ -99,7 +99,7 @@ const LoginScreen = ({}) => {
               />
               <Text
                 style={{fontFamily: FontTypes.secondary}}
-                className="text-lg text-[#000] uppercase mt-5">
+                className="text-lg text-[#000] uppercase mt-3">
                 Hello
               </Text>
             </View>
