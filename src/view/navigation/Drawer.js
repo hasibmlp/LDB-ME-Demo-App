@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {
   HomeIcon,
@@ -28,6 +28,8 @@ import VotingScreen from '../screens/VotingScreen';
 import SocialMediaScreen from '../screens/SocialMediaScreen';
 import SurveyScreen from '../screens/SurveyScreen';
 import CMEScreen from '../screens/CMEScreen';
+
+import BootSplash from 'react-native-bootsplash';
 
 import BackIconButton from '../common/icons/BackIconButton';
 import BarsIconButton from '../common/icons/BarsIconButton';

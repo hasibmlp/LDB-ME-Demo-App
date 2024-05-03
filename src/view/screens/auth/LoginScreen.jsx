@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -19,6 +19,7 @@ import Button from '../../common/button/Button';
 import {Colors} from '../../theme/colors';
 import ToastMessage from '../../common/notification/ToastMessage';
 import {Images} from '../../theme/image';
+import {AuthContext} from '../../../core/redux/provider/authProvider';
 
 const loginValidationSchema = Yup.object({
   email: Yup.string()
@@ -30,6 +31,7 @@ const loginValidationSchema = Yup.object({
 const LoginScreen = ({}) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({});
+  const {handleSignIn} = useContext(AuthContext);
 
   const navigation = useNavigation();
 
@@ -71,9 +73,10 @@ const LoginScreen = ({}) => {
       return;
     }
 
+    handleSignIn(data);
     AsyncStorage.setItem('@userKey', data.Useruniqueid);
     AsyncStorage.setItem('@user', JSON.stringify(data));
-    navigation.navigate('MyDrawer');
+    // navigation.navigate('MyDrawer');
     setStatus({message: data.Message, status: data.Status});
   };
   return (

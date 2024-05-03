@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
 import {Images} from '../theme/image';
 import {useNavigation} from '@react-navigation/native';
+
+import BootSplash from 'react-native-bootsplash';
 
 const data = [
   {title: 'Agenda', imageUrl: Images.Agenda, navigate: 'AgendaScreen'},
