@@ -18,7 +18,6 @@ const MoreScreen = () => {
 
   return (
     <View className="flex-1 items-center justify-center -translate-y-20">
-      <EllipsisHorizontalIcon size={53} />
       <View className="w-20 h-20 rounded-full bg-neutral-200 items-center justify-center">
         <UserIcon size={30} color="black" />
       </View>
